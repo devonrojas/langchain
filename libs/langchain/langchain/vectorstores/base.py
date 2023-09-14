@@ -531,6 +531,8 @@ class VectorStoreRetriever(BaseRetriever):
         "similarity_score_threshold",
         "mmr",
     )
+    _expects_other_args: bool = True
+    _new_arg_supported: bool = True
 
     class Config:
         """Configuration for this pydantic object."""
