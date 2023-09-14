@@ -17,14 +17,14 @@ class _DocumentWithState(Document):
 
     def to_document(self) -> Document:
         """Convert the DocumentWithState to a Document."""
-        return Document(page_content=self.page_content, metadata=self.metadata)
+        return Document(page_content=self.page_content, metadata=self.metadata, score=self.score)
 
     @classmethod
     def from_document(cls, doc: Document) -> "_DocumentWithState":
         """Create a DocumentWithState from a Document."""
         if isinstance(doc, cls):
             return doc
-        return cls(page_content=doc.page_content, metadata=doc.metadata)
+        return cls(page_content=doc.page_content, metadata=doc.metadata, score=doc.score)
 
 
 def get_stateful_documents(
