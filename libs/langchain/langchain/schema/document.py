@@ -16,6 +16,8 @@ class Document(Serializable):
     """Arbitrary metadata about the page content (e.g., source, relationships to other
         documents, etc.).
     """
+    score: float
+    """Embedding similarity to query"""
 
     @property
     def lc_serializable(self) -> bool:
