@@ -19,6 +19,7 @@ from typing import (
 
 import numpy as np
 
+from langchain.schema import Document
 from langchain.docstore.base import AddableMixin, Docstore
 from langchain.docstore.document import Document
 from langchain.docstore.in_memory import InMemoryDocstore
@@ -232,9 +233,11 @@ class FAISS(VectorStore):
                     for key, value in filter.items()
                 }
                 if all(doc.metadata.get(key) in value for key, value in filter.items()):
-                    docs.append((doc, scores[0][j]))
+                    doc.score = scores[0][j]
+                    docs.append(doc)
             else:
-                docs.append((doc, scores[0][j]))
+                doc.score = scores[0][j]
+                docs.append(doc)
 
         score_threshold = kwargs.get("score_threshold")
         if score_threshold is not None:
@@ -245,11 +248,12 @@ class FAISS(VectorStore):
                 else operator.le
             )
             docs = [
-                (doc, similarity)
-                for doc, similarity in docs
-                if cmp(similarity, score_threshold)
+                doc
+                for doc in docs
+                if cmp(doc.score, score_threshold)
             ]
-        return docs[:k]
+        print([doc.score for doc in docs])
+        return sorted(docs, key=lambda x: x.score, reverse=True)[:k]
 
     def similarity_search_with_score(
         self,
@@ -334,10 +338,7 @@ class FAISS(VectorStore):
         docs_and_scores = self.similarity_search_with_score(
             query, k, filter=filter, fetch_k=fetch_k, **kwargs
         )
-        docs = [Document(page_content=doc.page_content, 
-                         metadata=doc.metadata, 
-                         score=score) for doc, score in docs_and_scores]
-        return sorted(docs, key=lambda x: x.score, reverse=True)
+        return [doc for doc in docs_and_scores]
 
     def max_marginal_relevance_search_with_score_by_vector(
         self,
