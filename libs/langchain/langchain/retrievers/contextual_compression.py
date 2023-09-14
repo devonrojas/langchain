@@ -42,7 +42,6 @@ class ContextualCompressionRetriever(BaseRetriever):
         docs = self.base_retriever.get_relevant_documents(
             query, callbacks=run_manager.get_child(), **kwargs
         )
-        print([doc.score for doc in docs])
         if docs:
             compressed_docs = self.base_compressor.compress_documents(
                 docs, query, callbacks=run_manager.get_child()

@@ -14,6 +14,8 @@ class _DocumentWithState(Document):
 
     state: dict = Field(default_factory=dict)
     """State associated with the document."""
+    similarity_score: float = Field(default=None)
+    """Embedding simliarity associated with the document"""
 
     def to_document(self) -> Document:
         """Convert the DocumentWithState to a Document."""
