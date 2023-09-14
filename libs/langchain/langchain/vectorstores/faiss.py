@@ -337,7 +337,7 @@ class FAISS(VectorStore):
         docs = [Document(page_content=doc.page_content, 
                          metadata=doc.metadata, 
                          score=score) for doc, score in docs_and_scores]
-        return sorted(docs, lambda x: x.score, reverse=True)
+        return sorted(docs, key=lambda x: x.score, reverse=True)
 
     def max_marginal_relevance_search_with_score_by_vector(
         self,
