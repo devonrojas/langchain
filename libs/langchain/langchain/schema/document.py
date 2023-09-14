@@ -16,7 +16,7 @@ class Document(Serializable):
     """Arbitrary metadata about the page content (e.g., source, relationships to other
         documents, etc.).
     """
-    score: float = None
+    score: float = Field(default=None)
     """Embedding similarity to query"""
 
     @property
