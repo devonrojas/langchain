@@ -253,7 +253,7 @@ class FAISS(VectorStore):
                 if cmp(doc.score, score_threshold)
             ]
         print([doc.score for doc in docs])
-        return sorted(docs, key=lambda x: x.score, reverse=True)[:k]
+        return docs[:k]
 
     def similarity_search_with_score(
         self,

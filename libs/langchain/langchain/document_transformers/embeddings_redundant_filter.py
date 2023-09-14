@@ -38,7 +38,9 @@ def get_stateful_documents(
     Returns:
         A list of documents with state.
     """
-    return [_DocumentWithState.from_document(doc) for doc in documents]
+    docs = [_DocumentWithState.from_document(doc) for doc in documents]
+    print([doc.score for doc in docs])
+    return docs
 
 
 def _filter_similar_embeddings(
