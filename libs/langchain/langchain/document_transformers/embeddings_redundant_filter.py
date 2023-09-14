@@ -38,7 +38,7 @@ def get_stateful_documents(
     Returns:
         A list of documents with state.
     """
-    print([doc.score for doc in documents])
+    # print([doc.score for doc in documents])
     docs = [_DocumentWithState.from_document(doc) for doc in documents]
     return docs
 
