@@ -234,10 +234,10 @@ class FAISS(VectorStore):
                 }
                 if all(doc.metadata.get(key) in value for key, value in filter.items()):
                     doc.score = scores[0][j]
-                    docs.append(doc)
+                    docs.append((doc, scores[0][j]))
             else:
                 doc.score = scores[0][j]
-                docs.append(doc)
+                docs.append((doc, scores[0][j]))
 
         score_threshold = kwargs.get("score_threshold")
         if score_threshold is not None:
@@ -248,11 +248,10 @@ class FAISS(VectorStore):
                 else operator.le
             )
             docs = [
-                doc
-                for doc in docs
-                if cmp(doc.score, score_threshold)
+                (doc, similarity)
+                for doc, similarity in docs
+                if cmp(similarity, score_threshold)
             ]
-        # print([doc.score for doc in docs])
         return docs[:k]
 
     def similarity_search_with_score(
@@ -338,7 +337,7 @@ class FAISS(VectorStore):
         docs_and_scores = self.similarity_search_with_score(
             query, k, filter=filter, fetch_k=fetch_k, **kwargs
         )
-        return [doc for doc in docs_and_scores]
+        return [doc for doc, _ in docs_and_scores]
 
     def max_marginal_relevance_search_with_score_by_vector(
         self,

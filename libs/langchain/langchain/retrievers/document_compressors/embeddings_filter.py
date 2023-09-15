@@ -61,7 +61,6 @@ class EmbeddingsFilter(BaseDocumentCompressor):
         similarity = self.similarity_fn([embedded_query], embedded_documents)[0] # list of similarity scores for documents
         for doc, score in zip(stateful_documents, similarity):
             doc.similarity_score = score
-        print([doc.similarity_score for doc in stateful_documents])
         included_idxs = np.arange(len(embedded_documents))
         if self.k is not None:
             included_idxs = np.argsort(similarity)[::-1][: self.k]
