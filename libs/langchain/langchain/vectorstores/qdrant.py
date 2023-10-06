@@ -605,15 +605,24 @@ class Qdrant(VectorStore):
             consistency=consistency,
             **kwargs,
         )
-        return [
-            (
-                self._document_from_scored_point(
+        docs = []
+        for result in results:
+            doc = self._document_from_scored_point(
                     result, self.content_payload_key, self.metadata_payload_key
-                ),
-                result.score,
-            )
-            for result in results
-        ]
+                )
+            doc.score = result.score
+            docs.append(doc)
+
+        return docs
+        # return [
+        #     (
+        #         self._document_from_scored_point(
+        #             result, self.content_payload_key, self.metadata_payload_key
+        #         ),
+        #         result.score,
+        #     )
+        #     for result in results
+        # ]
 
     async def _asearch_with_score_by_vector(
         self,
