@@ -611,7 +611,7 @@ class Qdrant(VectorStore):
                     result, self.content_payload_key, self.metadata_payload_key
                 )
             doc.score = result.score
-            docs.append(doc)
+            docs.append((doc, result.score))
 
         return docs
         # return [
